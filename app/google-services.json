@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "30363040278",
+    "project_id": "smart-camera-58a9c",
+    "storage_bucket": "smart-camera-58a9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30363040278:android:2011ec4cc58c964af2d337",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.mlkit_custommodel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC_eReNVywFfwETfKk8E91l1XAaUoWJyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30363040278:android:649b32039a629989f2d337",
+        "android_client_info": {
+          "package_name": "com.placek.maja.smartcam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC_eReNVywFfwETfKk8E91l1XAaUoWJyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30363040278:android:1cfeec74bb4ef2f7f2d337",
+        "android_client_info": {
+          "package_name": "com.placek.maja.smartcamera"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC_eReNVywFfwETfKk8E91l1XAaUoWJyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
