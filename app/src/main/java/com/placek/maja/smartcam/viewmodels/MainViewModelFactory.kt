@@ -1,14 +1,14 @@
 package com.placek.maja.smartcam.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.placek.maja.smartcam.TextRecognizer
 
-class TextRecognitionViewModelFactory(private val textRecognizer: TextRecognizer) : ViewModelProvider.Factory {
+class MainViewModelFactory(private val context: Context): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TextRecognitionViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return TextRecognitionViewModel(textRecognizer) as T
+            return MainViewModel(context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
