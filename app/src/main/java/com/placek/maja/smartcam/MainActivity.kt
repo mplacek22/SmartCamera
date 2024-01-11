@@ -1,5 +1,7 @@
 package com.placek.maja.smartcam
 
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,23 +24,36 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import com.google.mlkit.vision.common.InputImage
 import com.placek.maja.smartcam.ui.theme.SmartCamTheme
+import java.io.IOException
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), TextRecognitionCallback{
+    private val textRecognizer = TextRecognizer()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            SmartCamTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    MainActivityView()
-                }
-            }
+//        setContentView(R.layout.activity_my)
+
+        // Assuming you have a drawable resource named 'my_image'
+        textRecognizer.recognizeText(this, R.drawable.img, this)
+    }
+
+    override fun onTextRecognized(text: String) {
+        println(text)
+        // Use the recognized text here
+        runOnUiThread {
+            // Update UI with recognized text
+            // Example: textView.text = text
         }
     }
+
+    override fun onError(e: Exception) {
+        // Handle the error here
+        e.printStackTrace()
+    }
+
 }
 
 @Composable
