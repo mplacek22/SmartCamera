@@ -15,7 +15,6 @@ interface TextRecognitionCallback {
 
 class TextRecognizer {
     private val textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-    private var txt = ""
     private fun imageFromResource(context: Context, resourceId: Int): InputImage? {
         return try {
             val drawable = ContextCompat.getDrawable(context, resourceId)

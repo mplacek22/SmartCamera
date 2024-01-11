@@ -1,112 +1,106 @@
 package com.placek.maja.smartcam
 
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import com.google.mlkit.vision.common.InputImage
 import com.placek.maja.smartcam.ui.theme.SmartCamTheme
-import java.io.IOException
+import com.placek.maja.smartcam.viewmodels.TextRecognitionViewModel
+import com.placek.maja.smartcam.viewmodels.TextRecognitionViewModelFactory
 
-class MainActivity : ComponentActivity(), TextRecognitionCallback{
+class MainActivity : ComponentActivity(){
     private val textRecognizer = TextRecognizer()
+
+    // Create the ViewModel using the factory
+    private val textRecognitionViewModel: TextRecognitionViewModel by viewModels {
+        TextRecognitionViewModelFactory(textRecognizer)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_my)
-
-        // Assuming you have a drawable resource named 'my_image'
-        textRecognizer.recognizeText(this, R.drawable.img, this)
-    }
-
-    override fun onTextRecognized(text: String) {
-        println(text)
-        // Use the recognized text here
-        runOnUiThread {
-            // Update UI with recognized text
-            // Example: textView.text = text
+        setContent {
+            SmartCamTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainActivityView(textRecognitionViewModel, this)
+                }
+            }
         }
     }
-
-    override fun onError(e: Exception) {
-        // Handle the error here
-        e.printStackTrace()
-    }
-
 }
 
 @Composable
-fun MainActivityView() {
+fun MainActivityView(textRecognitionViewModel: TextRecognitionViewModel, context: Context) {
+    val currentImageResId by textRecognitionViewModel.currentImageResId.collectAsState()
+    val recognizedText by textRecognitionViewModel.recognizedText.collectAsState()
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Image view
+        Column {
             Image(
-                painter = painterResource(id = R.drawable.hello_world),
+                painter = painterResource(id = currentImageResId),
                 contentDescription = null, // TODO: Provide a meaningful description
                 modifier = Modifier
-                    .size(200.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
                     .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
+            Button(
+                onClick = {
+                    textRecognitionViewModel.switchToNextImage()
+                },
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+            ) {
+                Text(text = "Switch Image", style = MaterialTheme.typography.headlineMedium)
+            }
 
-            // Text view
+            // Button to detect text
+            Button(
+                onClick = {
+                    textRecognitionViewModel.detectText(context)
+                },
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+            ) {
+                Text(text = "Detect Text", style = MaterialTheme.typography.headlineMedium)
+            }
+
+            // Display the recognized text
             Text(
-                text = "Your Extracted Text",
+                text = recognizedText ?: "Recognized text will appear here",
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .fillMaxWidth(),
                 style = MaterialTheme.typography.bodyLarge
             )
-
-            // Button to capture image
-            Button(
-                onClick = { /* TODO: Implement image capture */ },
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxWidth(),
-            ) {
-                Text(text = "Snap", style = MaterialTheme.typography.headlineMedium)
-            }
-
-            // Button to detect text
-            Button(
-                onClick = { /* TODO: Implement text detection */ },
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxWidth(),
-            ) {
-                Text(text = "Detect", style = MaterialTheme.typography.headlineMedium)
-            }
         }
     }
 }
