@@ -12,10 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartCam"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4315636878407651~9159207083"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.SmartCam">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
